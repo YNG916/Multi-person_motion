@@ -44,7 +44,7 @@ Taekwondo, 11%
 ##  双人motion edit, 借鉴了motionfix的数据集的标注方法, 使用target motion + source motion + edit text 的三元数据
 ##  但在不再使用相似度最高的motion对作为 target 和 source，而使用长motion序列中的连续motion components作为source和target
 ##  
-##  因为双人motion edit 更关注编辑交互关系的变化: 
+##  因为双人motion edit 更关注编辑交互关系的变化 (标注时也要注意重点为edit而不是描述两个motion): 
 ##
 ##      1. 双人运动方式变化: 平行； 镜像; 交替重复; 同步重复；跟随; 一人静止
 ##      2. 动作主体变更: A主动, B被动; A被动, B主动 (如A推倒B, 变更为B推倒A)
@@ -62,7 +62,7 @@ Taekwondo, 11%
 ## but instead of choosing the most‐similar pair by similarity score, we use consecutive components within the same long sequence as our source/target pairs.
 ## This is because dyadic motion editing is primarily concerned with how the interaction relationship changes, namely:
 
-##      1. Pattern of multi-person movement: parallel, mirrored, alternated repeat; synchronous repeat; following, one‐person‐stationary
+##      1. Pattern of multi-person movement: parallel, mirrored, alternatively repeat; synchronously repeat; following, one‐person‐stationary
 ##      2. Change of action initiator: A active, B passive / A passive, B active (e.g. “A pushes down B” ↔ “B pushes down A”)
 ##              (We might even consider swapping Person 1 and Person 2’s data during training.)
 ##      3. Contact relationship & contact point changes: contact/separation; change of contact point (e.g. “A supports B’s shoulder” ↔ “A supports B’s arm”)
@@ -76,7 +76,9 @@ Taekwondo, 11%
 
 #############################################
 
-
+# Example
+# #8-9: A，B的右手分离，左手保持接触，镜像同步重复握手并弯腰
+# #8–9: A and B separate their right hands, maintain contact with their left hands, and mirror-wise synchronously repeat the handshake while bowing.
 
 
 1. 动作方式:1.同步(平行), 2.交替(如两人重复击球), 3.跟随(一先一后), 4.镜像, 5.单人运动
@@ -169,9 +171,3 @@ Taekwondo, 11%
     gently
     forcefully
     suddenly
-
-# Example
-
-
-
-

@@ -10,6 +10,8 @@ Shaolin, 6%
 Latin, 11% 
 Taekwondo, 11%
 
+#####################################
+
 ## 数据有一些几千帧的长motion组成，而每个长motion会被分为长度为几百或几十帧的连续motion components
 ## 在数据集的排列顺序为，一个长motion后跟着属于它的全部motion components
 ## 我们不将长motion作为target或source motion，仅对其所属的motion components进行标注
@@ -17,17 +19,27 @@ Taekwondo, 11%
 ## 不跨越长motion进行标注
 ## 每个motion component作为其前一个motion的target motion，同时也作为其后一个motion的source motion
 
-## e.g.
+## The dataset consists of very long motion sequences—each several thousand frames in length
+## which are subdivided into continuous motion components of a few hundred or a few dozen frames each. 
+## In the data, every long motion is followed, in order, by all of its constituent components. 
+## We do not treat the long motions themselves as source or target; we only annotate their individual components.
+## Within each long motion, we pair adjacent components along the time axis: 
+## the earlier component becomes the source motion, and the immediately following component becomes the target motion. 
+## Annotations never cross the boundary between long motions. 
+## Note that each component thus serves both as the target of its previous neighbor and the source for its next neighbor.
+
+## long motion e.g.:
 
 #1 handshake1
 #7 handshake2
-#11 挥手1
-#14 挥手2
-#17 挥手3
-#20 挥手4
+#11 wave1
+#14 wave2
+#17 wave3
+#20 wave4
+# ...
 
 
-########
+#########################################
 
 ##  双人motion edit, 借鉴了motionfix的数据集的标注方法, 使用target motion + source motion + edit text 的三元数据
 ##  但在不再使用相似度最高的motion对作为 target 和 source，而使用长motion序列中的连续motion components作为source和target
@@ -45,7 +57,26 @@ Taekwondo, 11%
 ##  我们的关注的motion变化的 target 和 source 往往不是十分相似，最相似的 motion pair 无法满足需要
 ##  所以我们使用长motion的连续motion components作为motion pairs, 它们往往能体现两人之间协作关系的变化
 
-########
+
+## For multi-person motion editing, we borrow the triplet annotation format (target motion + source motion + edit text) from the MotionFix dataset, 
+## but instead of choosing the most‐similar pair by similarity score, we use consecutive components within the same long sequence as our source/target pairs.
+## This is because dyadic motion editing is primarily concerned with how the interaction relationship changes, namely:
+
+##      1. Pattern of multi-person movement: parallel, mirrored, alternating, following, one‐person‐stationary
+##      2. Change of action initiator: A active, B passive ⇄ A passive, B active (e.g. “A pushes down B” ↔ “B pushes down A”)
+##              (We might even consider swapping Person 1 and Person 2’s data during training.)
+##      3. Contact relationship & contact point changes: contact/separation; change of contact point (e.g. “A supports B’s shoulder” ↔ “A supports B’s arm”)
+##      4. Spatial relationship changes: farther/closer; face-to-face/back-to-back; A behind B / B behind A; front/back/left/right positional shifts
+
+## Other aspects—individual action type, global translation, amplitude, force, etc.—are secondary.
+
+## Because the closest‐matching motions fail to capture true interaction changes
+## we deliberately form our source/target pairs from consecutive components of the long motion, 
+## which more reliably reflect shifts in the two persons’ cooperative relationship.
+
+#############################################
+
+
 
 
 1. 动作方式:1.同步(平行), 2.交替(如两人重复击球), 3.跟随(一先一后), 4.镜像, 5.单人运动

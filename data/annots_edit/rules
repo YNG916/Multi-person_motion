@@ -1,0 +1,146 @@
+7779, 
+Hiphop, 5% (no.5158)
+Waltz, 5% 
+Bagua, 5% 
+Xingyi, 5% 
+Daily Motion, 39% (hugging, handshake,passing objects, greeting, communicating)
+Fencing, 2% 
+Taichi, 6% 
+Shaolin, 6% 
+Latin, 11% 
+Taekwondo, 11%
+
+## 数据有一些几千帧的长motion组成，而每个长motion会被分为长度为几百或几十帧的连续motion components
+## 在数据集的排列顺序为，一个长motion后跟着属于它的全部motion components
+## 我们不将长motion作为target或source motion，仅对其所属的motion components进行标注
+## 时间序列上靠前的motion component作为source motion，其下一个motion component作为target motion
+## 不跨越长motion进行标注
+## 每个motion component作为其前一个motion的target motion，同时也作为其后一个motion的source motion
+
+## e.g.
+
+#1 handshake1
+#7 handshake2
+#11 挥手1
+#14 挥手2
+#17 挥手3
+#20 挥手4
+
+
+########
+
+##  双人motion edit, 借鉴了motionfix的数据集的标注方法, 使用target motion + source motion + edit text 的三元数据
+##  但在不再使用相似度最高的motion对作为 target 和 source，而使用长motion序列中的连续motion components作为source和target
+##  
+##  因为双人motion edit 更关注编辑交互关系的变化: 
+##
+##      1. 双人运动方式变化: 平行； 镜像; 交替; 跟随; 一人静止
+##      2. 动作主体变更: A主动, B被动; A被动, B主动 (如A推倒B, 变更为B推倒A)
+##              (考虑交换person1和person2的motion数据进行训练？)
+##      3. 接触关系及部位变化: 接触/分离; 接触部位变更(如A用手扶住B的肩膀，变更为A用手扶住B的胳膊)
+##      4. 空间相对关系变化: 更远/更近, 面对面， 背对背, A在B背后/B在A背后, 前后左右位置变化
+##  
+##  而个人的动作类型，空间移动，动作幅度，动作力度等是次要的
+##
+##  我们的关注的motion变化的 target 和 source 往往不是十分相似，最相似的 motion pair 无法满足需要
+##  所以我们使用长motion的连续motion components作为motion pairs, 它们往往能体现两人之间协作关系的变化
+
+########
+
+
+1. 动作方式:1.同步(平行), 2.交替(如两人重复击球), 3.跟随(一先一后), 4.镜像, 5.单人运动
+
+2. 动作主体: A(red),B(green)
+
+3. 主从关系: 主动, 被动, 
+
+4. 动态相对关系: 1.靠近/远离, 2.接触/分离
+
+5. 接触部位: A和B的身体部位对(手、肩膀、背部..)
+
+6. 空间相对关系:上下左右前后，面对面，背对背，同向
+
+7. 动作类型: e.g. 握手，拥抱，举手，抬腿，躺下，传递，旋转，站立...
+
+8. 空间移动: 距离，角度，
+
+9. 动作幅度: 高/低，远/近，快/慢, 频率
+
+10. 力度: 轻柔/有力/突然
+
+
+
+1. Action Mode: Tags describing how the two agents coordinate:
+
+    synchronous;synchronously,in sync
+    alternating (e.g. two players rallying a ball);alternately
+    follow-the-leader (one after the other);A ... follwing B
+    mirroring/parallel;	in a mirrored fashion / mirror-wise; in parallel
+    solo;individually / independently
+
+2. Agent: Identifies which character performs the action:
+
+    A (red)
+    B (green)
+
+3. Role Relation: Specifies who drives the interaction:
+
+    active;actively
+    passive;passively
+
+4. Relative Dynamics: Describes the approach/separation dynamic:
+
+    approach / withdraw; on approach / while approaching; on withdrawal / while withdrawing
+    contact / separation; upon contact / in contact; upon separation / as they separate
+
+5. Contact Location: Which body parts touch:
+
+    hand
+    shoulder
+    back
+    … (e.g. elbow, hip)
+
+6. Spatial Relation: Relative orientation or positioning:
+
+    above / below
+    left / right
+    front / back
+    face-to-face
+    back-to-back
+    same-direction
+
+7. Action Type: The basic motion being performed (extendable per your action vocabulary):
+
+    handshake
+    hug
+    raise-hand
+    lift-leg
+    crouch
+    pass
+    rotate
+    stand
+    …
+
+8. Spatial Movement Parameters: Quantitative movement descriptors:
+
+    distance (e.g. “0.5 m forward”);[X] forward/backward
+    angle (e.g. “rotate 45°”)
+
+9. Amplitude & Tempo: Describes magnitude and speed/frequency:
+
+    higher / lower
+    far / near
+    faster / slower
+    higher/lower frequency
+
+10. Force & Style: Describes intensity or manner:
+
+    gently
+    forcefully
+    suddenly
+
+# Example
+# “Let A perform a synchronous, forceful transition from handshake to hug, in a face-to-face orientation, with contact lasting 20 frames.”
+
+
+

@@ -46,7 +46,7 @@ Taekwondo, 11%
 ##  
 ##  因为双人motion edit 更关注编辑交互关系的变化 (标注时也要注意重点为edit而不是描述两个motion): 
 ##
-##      1. 双人运动方式变化: 平行； 镜像; 交替重复; 同步重复；跟随; 一人静止
+##      1. 双人运动方式变化: 同步平行； 同步镜像; 同步重复; 交替重复；跟随; 一人静止
 ##      2. 动作主体变更: A主动, B被动; A被动, B主动 (如A推倒B, 变更为B推倒A)
 ##              (考虑交换person1和person2的motion数据进行训练？)
 ##      3. 接触关系及部位变化: 接触/分离; 接触部位变更(如A用手扶住B的肩膀，变更为A用手扶住B的胳膊)
@@ -62,7 +62,7 @@ Taekwondo, 11%
 ## but instead of choosing the most‐similar pair by similarity score, we use consecutive components within the same long sequence as our source/target pairs.
 ## This is because dyadic motion editing is primarily concerned with how the interaction relationship changes, namely:
 
-##      1. Pattern of multi-person movement: parallel, mirrored, alternatively repeat; synchronously repeat; following, one‐person‐stationary
+##      1. Pattern of multi-person movement: synchronously parallel; synchronously mirrored; synchronously repeat; alternatively repeat; following, one‐person‐stationary
 ##      2. Change of action initiator: A active, B passive / A passive, B active (e.g. “A pushes down B” ↔ “B pushes down A”)
 ##              (We might even consider swapping Person 1 and Person 2’s data during training.)
 ##      3. Contact relationship & contact point changes: contact/separation; change of contact point (e.g. “A supports B’s shoulder” ↔ “A supports B’s arm”)

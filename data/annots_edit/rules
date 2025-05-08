@@ -1,4 +1,5 @@
 7779, 
+7000左右全是单独的长motion
 Hiphop, 5% (no.5158)
 Waltz, 5% 
 Bagua, 5% 
@@ -51,6 +52,7 @@ Taekwondo, 11%
 ##              (考虑交换person1和person2的motion数据进行训练？)
 ##      3. 接触关系及部位变化: 接触/分离; 接触部位变更(如A用手扶住B的肩膀，变更为A用手扶住B的胳膊)
 ##      4. 空间相对关系变化: 更远/更近, 面对面， 背对背, A在B背后/B在A背后, 前后左右位置变化
+##      5. 对于每对target motion和source motion，edit text都要描述两人保持的相对位置或动作
 ##  
 ##  而个人的动作类型，空间移动，动作幅度，动作力度等是次要的
 ##
@@ -67,6 +69,7 @@ Taekwondo, 11%
 ##              (We might even consider swapping Person 1 and Person 2’s data during training.)
 ##      3. Contact relationship & contact point changes: contact/separation; change of contact point (e.g. “A supports B’s shoulder” ↔ “A supports B’s arm”)
 ##      4. Spatial relationship changes: farther/closer; face-to-face/back-to-back; A behind B / B behind A; front/back/left/right positional shifts
+##      5. In all motion components belonging to the entire long motion, each annotation should describe the relative positions of the two people or the action being sustained.
 
 ## Other aspects—individual action type, global translation, amplitude, force, etc.—are secondary.
 
@@ -93,7 +96,7 @@ Taekwondo, 11%
 
 6. 空间相对关系:上下左右前后，面对面，背对背，同向
 
-7. 动作类型: e.g. 握手，拥抱，举手，抬腿，躺下，传递，旋转，站立...
+7. 动作类型: e.g. 握手，拥抱，举手，抬腿，躺下，传递，旋转(角度、顺/逆时针)，站立...
 
 8. 空间移动: 距离，角度，
 

@@ -11,18 +11,33 @@ BASE = os.path.dirname(os.path.abspath(__file__))     # …/InterGen/tools
 BASE = os.path.dirname(BASE)                          # …/InterGen
 sys.path.insert(0, BASE) 
 from utils.paramUtil import t2m_kinematic_chain as kinematic_tree
+"""
+t2m_kinematic_chain = [
+    [0, 2,  5,  8, 11],      # 左下肢 pelvis → 左髋 → 左膝 → 左踝 → 左脚  
+    [0, 1,  4,  7, 10],      # 右下肢 pelvis → 右髋 → 右膝 → 右踝 → 右脚  
+    [0, 3,  6,  9, 12, 15],  # 躯干／头部 pelvis → 脊柱段1 → 脊柱段2 → 脊柱段3 → 颈部 → 头顶  
+    [9, 14, 17, 19, 21],     # 左上肢 neck/chest → 左肩 → 左肘 → 左腕 → 左手  
+    [9, 13, 16, 18, 20]      # 右上肢 neck/chest → 右肩 → 右肘 → 右腕 → 右手  
+]
+根节点index_0通常是骨盆(pelvis)。
+每个数字:对应第N个关节在扁平化 (T, 22*3) 数组里的关节编号。
+例如第一条链 [0,2,5,8,11]，你就按顺序把关节 0→2→5→8→11 的坐标依次用线画出来，得到左腿的 3D 骨架。
+这样，只要给出一个 (T,22,3) 的关节坐标张量，并沿着 t2m_kinematic_chain 里的每条索引链去连线，就能得到整个骨骼按正确的拓扑结构。
+mp_joints只取前22个joints的position, 即22*3=66维度
 
-# T2M 的 22 关节骨骼树示例：
-# kinematic_tree = [
-#     [0,1],[1,2],[2,3],[3,4],       # 右腿
-#     [0,5],[5,6],[6,7],[7,8],       # 左腿
-#     [0,9],[9,10],[10,11],          # 躯干
-#     [11,12],[12,13],               # 头
-#     [10,14],[14,15],[15,16],       # 左臂
-#     [10,17],[17,18],[18,19],       # 右臂
-#     [8,20],[4,21]                  # 脚
-# ]
+e.g.
+def plot_t2m(self, mp_data, result_path, caption):
+        mp_joint = []
+        for i, data in enumerate(mp_data):
+            if i == 0:
+                joint = data[:,:22*3].reshape(-1,22,3)
+            else:
+                joint = data[:,:22*3].reshape(-1,22,3)
 
+            mp_joint.append(joint)
+
+        plot_3d_motion(result_path, paramUtil.t2m_kinematic_chain, mp_joint, title=caption, fps=30)
+"""
 def plot_3d_motion(save_path, kinematic_tree, mp_joints, title, figsize=(10, 10), fps=30, radius=4):
     matplotlib.use('Agg')
 
@@ -132,7 +147,13 @@ def plot_3d_motion(save_path, kinematic_tree, mp_joints, title, figsize=(10, 10)
 
 
 if __name__ == "__main__":
-    root = "/cvhci/temp/yyang/InterGen/data/motions_processed"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_processed"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_change_speed"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_change_distance"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_freeze"
+    root = "/cvhci/temp/yyang/InterGen/data/motions_concat"
+
+
     dir1 = os.path.join(root, "person1")
     dir2 = os.path.join(root, "person2")
 
@@ -140,6 +161,7 @@ if __name__ == "__main__":
     files1 = {f for f in os.listdir(dir1) if f.endswith(".npy")}
     files2 = {f for f in os.listdir(dir2) if f.endswith(".npy")}
     common = sorted(files1 & files2)
+
 
     for fname in common:
         path1 = os.path.join(dir1, fname)
@@ -159,8 +181,20 @@ if __name__ == "__main__":
             else:
                 raise ValueError(f"无法识别的数组形状 {arr.shape}")
 
-        seq1 = ensure_xyz(seq1)
-        seq2 = ensure_xyz(seq2)
+        # seq1 = ensure_xyz(seq1)
+        # seq2 = ensure_xyz(seq2)
+         # 假设可视化 22 关节
+        T, D = seq1.shape
+        if D % 3 == 0 and D // 3 == 82:
+            # 原始 82 markers
+            J = 82
+        else:
+            # 简化 22 关节
+            J = 22
+
+        # 取前 J*3 列，重塑成 (T, J, 3)
+        seq1 = seq1[:, :J*3].reshape(T, J, 3)
+        seq2 = seq2[:, :J*3].reshape(T, J, 3)
 
         seq1 = seq1[:, :, [0, 2, 1]]
         seq2 = seq2[:, :, [0, 2, 1]]
@@ -173,7 +207,12 @@ if __name__ == "__main__":
             y_min = seq[:,:,1].min()
             seq[:,:,1] -= y_min
 
-        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results5", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_change_speed", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_change_distance", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_freeze_person2", fname.replace(".npy", ".mp4"))
+        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_concat", fname.replace(".npy", ".mp4"))
+
+
         title     = fname.replace(".npy", "")
         plot_3d_motion(save_path, kinematic_tree, [seq1, seq2],
                        title=title, fps=20)

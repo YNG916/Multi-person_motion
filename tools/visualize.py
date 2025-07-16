@@ -151,7 +151,11 @@ if __name__ == "__main__":
     # root = "/cvhci/temp/yyang/InterGen/data/motions_change_speed"
     # root = "/cvhci/temp/yyang/InterGen/data/motions_change_distance"
     # root = "/cvhci/temp/yyang/InterGen/data/motions_freeze"
-    root = "/cvhci/temp/yyang/InterGen/data/motions_concat"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_concat"
+    root = "/cvhci/temp/yyang/InterGen/data/motions_delete_kick"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_repeat_kick"
+
+
 
 
     dir1 = os.path.join(root, "person1")
@@ -210,7 +214,11 @@ if __name__ == "__main__":
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_change_speed", fname.replace(".npy", ".mp4"))
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_change_distance", fname.replace(".npy", ".mp4"))
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_freeze_person2", fname.replace(".npy", ".mp4"))
-        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_concat", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_concat", fname.replace(".npy", ".mp4"))
+        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_delete_kick", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_repeat_kick", fname.replace(".npy", ".mp4"))
+
+
 
 
         title     = fname.replace(".npy", "")

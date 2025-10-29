@@ -2,7 +2,7 @@
 
 """
 
-  python adjust_detect_kick_interp2.py \
+  python adjust_detect_kick_repeat_interp.py \
   --input_dir1 /cvhci/temp/yyang/InterGen/data/motions_processed/person1 \
   --input_dir2 /cvhci/temp/yyang/InterGen/data/motions_processed/person2 \
   --output_dir1 /cvhci/temp/yyang/InterGen/data/motions_repeat_kick/person1 \

@@ -152,11 +152,9 @@ if __name__ == "__main__":
     # root = "/cvhci/temp/yyang/InterGen/data/motions_change_distance"
     # root = "/cvhci/temp/yyang/InterGen/data/motions_freeze"
     # root = "/cvhci/temp/yyang/InterGen/data/motions_concat"
-    root = "/cvhci/temp/yyang/InterGen/data/motions_delete_kick"
+    # root = "/cvhci/temp/yyang/InterGen/data/motions_delete_kick"
     # root = "/cvhci/temp/yyang/InterGen/data/motions_repeat_kick"
-
-
-
+    root = "/cvhci/temp/yyang/InterGen/data/motions_concat_result"
 
     dir1 = os.path.join(root, "person1")
     dir2 = os.path.join(root, "person2")
@@ -175,15 +173,15 @@ if __name__ == "__main__":
         seq2 = np.load(path2)
 
         # 如果是扁平化 (T, D)，就 reshape 成 (T, J, 3) —— 
-        def ensure_xyz(arr):
-            if arr.ndim == 2 and arr.shape[1] % 3 == 0:
-                T, D = arr.shape
-                J = D // 3
-                return arr.reshape(T, J, 3)
-            elif arr.ndim == 3 and arr.shape[2] == 3:
-                return arr
-            else:
-                raise ValueError(f"无法识别的数组形状 {arr.shape}")
+        # def ensure_xyz(arr):
+        #     if arr.ndim == 2 and arr.shape[1] % 3 == 0:
+        #         T, D = arr.shape
+        #         J = D // 3
+        #         return arr.reshape(T, J, 3)
+        #     elif arr.ndim == 3 and arr.shape[2] == 3:
+        #         return arr
+        #     else:
+        #         raise ValueError(f"无法识别的数组形状 {arr.shape}")
 
         # seq1 = ensure_xyz(seq1)
         # seq2 = ensure_xyz(seq2)
@@ -196,9 +194,9 @@ if __name__ == "__main__":
             # 简化 22 关节
             J = 22
 
-        # 取前 J*3 列，重塑成 (T, J, 3)
-        seq1 = seq1[:, :J*3].reshape(T, J, 3)
-        seq2 = seq2[:, :J*3].reshape(T, J, 3)
+        # 取前 J*3=66 列，重塑成 (T, J, 3)
+        seq1 = seq1[:, :66].reshape(T, 22, 3)
+        seq2 = seq2[:, :66].reshape(T, 22, 3)
 
         seq1 = seq1[:, :, [0, 2, 1]]
         seq2 = seq2[:, :, [0, 2, 1]]
@@ -215,8 +213,10 @@ if __name__ == "__main__":
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_change_distance", fname.replace(".npy", ".mp4"))
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_freeze_person2", fname.replace(".npy", ".mp4"))
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_concat", fname.replace(".npy", ".mp4"))
-        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_delete_kick", fname.replace(".npy", ".mp4"))
+        # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_delete_kick", fname.replace(".npy", ".mp4"))
         # save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize_results_repeat_kick", fname.replace(".npy", ".mp4"))
+        save_path = os.path.join("/cvhci/temp/yyang/InterGen/visualize/visualize_results_concat_batch", fname.replace(".npy", ".mp4"))
+
 
 
 
